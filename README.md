@@ -1,47 +1,62 @@
-# Astro Starter Kit: Minimal
+README для приложения Task Manager Astro + Svelte
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Описание проекта
+Это тестовый проект Task Manager, использующий Astro с интеграцией Svelte как компонента для динамических частей web приложения. 
+Проект включает в себя использование MySQL для хранения данных и Redis для кэширования.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Требования
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Для локального запуска проекта необходимо установить следующие инструменты:
 
-## 🚀 Project Structure
+Node.js версии 18 или выше.
+npm для установки зависимостей.
+MySQL для базы данных.
+Redis для кэширования.
+npm для установки зависимостей.
 
-Inside of your Astro project, you'll see the following folders and files:
+Установка
+Клонировать репозиторий:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+git clone https://github.com/kirill2884/task-manager.git
+cd <каталог назначение>
+Установить зависимости:
+Убедитесь, что у вас установлены все зависимости для работы проекта:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+npm install
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+ВАЖНО!!! Для работы проекта необходима СУБД MySql и Redis
+Убедитесь, что MySQL и Redis работают локально, или используйте Docker (см. ниже).
 
-Any static assets, like images, can be placed in the `public/` directory.
+Настройка переменных окружения:
 
-## 🧞 Commands
+Для локального запуска необходим файл .env в корне проекта с необходимыми переменными:
 
-All commands are run from the root of the project, from a terminal:
+DATABASE_URL="<адрес для доступа к MySQL DataBase>/task-manager" Например "mysql://root:rootpassword@localhost:3306/task-manager"
+REDIS_URL=<адрес для доступа к Redis> Например: 'redis://localhost:6379'
+PORT=3001 # Опционально: порт, на котором будет работать приложение (по умолчанию 3000)
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Локальный запуск
+Убедитесь, что MySQL и Redis запущены на вашем локальном компьютере.
+Выполните миграцию базы данных с помощью команды:
+npx prisma migrate deploy
 
-## 👀 Want to learn more?
+Важно: Если вы вносили изменения в схему базы данных, используйте команду npx prisma migrate dev вместо deploy, чтобы создать новые миграции.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Запустите приложение:
+npm run dev
+
+После этого сервер будет доступен по адресу http://localhost:3000, если вы не указали другой порт в переменных среды.
+
+Запуск через Docker
+
+Чтобы запустить проект в Docker:
+Убедитесь, что у вас настроены переменные окружения в файле task_manager/docker-compose.yml.
+
+Выполните команду:
+docker-compose up -d 
+
+Контейнеры с MySQL, Redis и Task Manager будут созданы и запущены. Миграции базы данных будут автоматически применены при запуске контейнера.
+После запуска контейнеров приложение будет доступно по порту, указанному в Docker-контейнере task-manager-container.
+
+Для запуска тестов используйте команду 
+npm run test

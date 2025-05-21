@@ -1,4 +1,34 @@
 ---
+import TaskList  from "../components/lists/TaskList.svelte"
+import TaskManager from '../components/forms/TaskFormManager.svelte'
+import Filter from '../components/filters/Filter.svelte'
+import { server as actions } from '../actions';
+import "../styles/global.css"
+import type { Task, TaskInput } from "../Types/Task";
+
+export const prerender = false;
+
+const selectedTaskRequest = await Astro.callAction(actions.tasks.getSelected,{});
+const filterRequest = await Astro.callAction(actions.tasks.getFilter,{});
+
+let selectedTask:Task|null = null;
+let filter:Filter|null = null;
+
+if(selectedTaskRequest.data && selectedTaskRequest.data.task){
+	selectedTask = selectedTaskRequest.data.task
+}
+
+if(filterRequest.data && filterRequest.data.filter){
+	filter = filterRequest.data.filter
+}
+console.log("filter before get all");
+console.log(filter);
+const result = await Astro.callAction(actions.tasks.getAll, filter ?? {});
+let tasks:Task[] = [];
+
+if (result.data && result.data.tasks) {
+  tasks = result.data.tasks; 
+}
 
 ---
 
@@ -8,9 +38,17 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Tasks list</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="flex justify-center items-start min-h-screen bg-gray-50">
+		<div class = "w-[90%] flex flex-col items-center ">
+			<h1 class="text-3xl font-bold text-gray-900 p-4">Task manager</h1>
+			<Filter {filter}></Filter>
+			<div class="mt-6 min-h-[60vh] min-w-[60vw] max-h-[60vh] overflow-y-auto border border-gray-300 rounded-xl shadow-sm p-4 bg-white">
+				<TaskList {tasks} {selectedTask}/>	
+			</div>	
+			<TaskManager client:load label="Add Task" task={null}></TaskManager>
+			<TaskManager client:load label="Edit Task" isUpdate = true></TaskManager>
+		</div>
 	</body>
 </html>
