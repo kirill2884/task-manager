@@ -2,6 +2,7 @@ import { TaskService } from '../../src/services/TaskService';
 import { prisma } from '../../src/instanses/PrismaClient';
 import redis from '../../src/instanses/Redis';
 import type {TaskInput } from '../../src/Types/Task';
+import type { Filter} from '../../src/Types/Filter';
 
 jest.mock('../../src/instanses/PrismaClient', () => ({
   prisma: {
@@ -28,6 +29,11 @@ describe('TaskService', () => {
       description: 'Test description',
       priority: "LOW",
       dueDate: new Date(),
+      completed: false,
+  };
+
+  const mockFilter: Filter = {
+      priority: "LOW",
       completed: false,
   };
 
@@ -89,6 +95,22 @@ describe('TaskService', () => {
     result.dueDate = new Date(result.dueDate);
     expect(result).toEqual(mockTask);
     expect(redis.get).toHaveBeenCalledWith('selectedTask');
+  });
+
+  it('setFilter: saves filter state in Redis', async () => {
+    await service.setFilter(mockFilter);
+    expect(redis.set).toHaveBeenCalledWith(
+      'filterTask',
+      JSON.stringify(mockFilter)
+    );
+  });
+
+  it('getFilter: retrieves filter state from Redis', async () => {
+    (redis.get as jest.Mock).mockResolvedValue(JSON.stringify(mockFilter));
+
+    const result = await service.getFilter();
+    expect(result).toEqual(mockFilter);
+    expect(redis.get).toHaveBeenCalledWith('filterTask');
   });
 
   it('compliteTask: completes a task', async () => {
