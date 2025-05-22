@@ -47,8 +47,13 @@ if (result.data && result.data.tasks) {
 			<div class="mt-6 min-h-[60vh] min-w-[60vw] max-h-[60vh] overflow-y-auto border border-gray-300 rounded-xl shadow-sm p-4 bg-white">
 				<TaskList {tasks} {selectedTask}/>	
 			</div>	
-			<TaskManager client:load label="Add Task" task={null}></TaskManager>
-			<TaskManager client:load label="Edit Task" isUpdate = true></TaskManager>
+			<div>
+				<TaskManager client:load label="Add Task"></TaskManager>
+				<TaskManager client:load label="Edit Task" isUpdate = true></TaskManager>
+			</div>
+
 		</div>
 	</body>
+	<script src="../js/confirm-delete.js"></script>
 </html>
+

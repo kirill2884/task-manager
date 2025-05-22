@@ -22,7 +22,7 @@ async getAllTasks(filter?: FilterInput) {
       where.completed = filter.completed;
     }
 
-    const tasks = await this.prismaClient.task.findMany({ where });
+    const tasks = await this.prismaClient.task.findMany({ where , orderBy:[{dueDate:'desc'}]});
     return tasks;
   } catch (error) {
     throw new Error('[TASK SERVICE] Failed to get tasks');
