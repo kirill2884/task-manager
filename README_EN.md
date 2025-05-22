@@ -125,10 +125,10 @@ If you've made changes to the database schema, use the command:
 
 ## RUNNING IN DOCKER
 
-1. To run the project in Docker:
-2. Make sure your environment variables are configured in the `task_manager/docker-compose.yml` file.
+To run the project in Docker:
 
-3. Run the command:
+1. Make sure your environment variables are configured in the `task_manager/docker-compose.yml` file.
+2. Run the command:
     ```bash
     docker-compose up -d 
 

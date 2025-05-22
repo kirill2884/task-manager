@@ -73,11 +73,16 @@ describe('TaskService', () => {
     (prisma.task.update as jest.Mock).mockResolvedValue({ ...mockTask, title: 'Updated' });
 
     const result = await service.updateTask(1, { ...mockTask, title: 'Updated' });
+    await service.selectTask(1, mockTask);
     expect(result.title).toBe('Updated');
     expect(prisma.task.update).toHaveBeenCalledWith({
       where: { id: 1 },
       data: { ...mockTask, title: 'Updated' }
     });
+    expect(redis.set).toHaveBeenCalledWith(
+      'selectedTask',
+      JSON.stringify({ id: 1, ...mockTask })
+    );
   });
 
   it('selectTask: saves selected task in Redis', async () => {

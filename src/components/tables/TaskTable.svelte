@@ -12,7 +12,7 @@
   }
 </style>
 
-<table class="min-w-full divide-y divide-gray-200 border border-gray-300 mt-4">
+<table class="min-w-full divide-y divide-gray-400 border border-gray-300 mt-4">
   <thead class="bg-gray-200">
     <tr>
       <th class="p-2 font-medium text-left text-gray-800">Title</th>
@@ -25,11 +25,11 @@
       <th class="p-2 font-medium text-left text-gray-800"></th>
     </tr>
   </thead>
-  <tbody class="divide-y divide-gray-100 bg-white">
+  <tbody class="divide-y divide-gray-200 bg-white">
     {#each tasks as task}
       <tr class:selected={task.id === selectedTask?.id}>
-        <td class="p-2">{task.title}</td>
-        <td class="p-2">{task.description}</td>
+        <td class="p-2 min-w-[10vw] max-w-[10vw] break-words">{task.title}</td>
+        <td class="p-2 min-w-[40vw] max-w-[40vw] break-words">{task.description}</td>
         <td class="p-2">{task.priority}</td>
         <td class="p-2">{new Date(task.dueDate).toLocaleDateString()}</td>
         <td class="p-2">{task.completed ? 'Completed' : 'Active'}</td>

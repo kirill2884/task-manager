@@ -104,7 +104,7 @@ async getAllTasks(filter?: FilterInput) {
         },
         data: task,
       });
-
+        await this.selectTask(updatedTask.id, task)
       return updatedTask;
     } catch (error) {
       throw new Error('[TASK SERVICE] Error updating of task with id:' + id);

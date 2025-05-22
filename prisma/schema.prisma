@@ -22,7 +22,7 @@ enum Priority {
 model Task {
   id          Int      @id @default(autoincrement()) 
   title       String   
-  description String?  
+  description String? @db.Text  
   priority    Priority   
   dueDate     DateTime 
   completed   Boolean  @default(false) 
